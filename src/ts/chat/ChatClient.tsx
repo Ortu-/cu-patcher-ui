@@ -189,8 +189,6 @@ class ChatClient {
       return;
     }
     this.chat.joinRoom(roomName + this.chat.config.serviceAddress);
-
-    this.addToStoredRooms(roomName);
   }
 
   public leaveRoom(roomName: string): void {
@@ -199,8 +197,6 @@ class ChatClient {
       return;
     }
     this.chat.leaveRoom(roomName + this.chat.config.serviceAddress);
-
-    this.removeFromStoredRooms(roomName);
   }
 
   public getRooms() : void {
