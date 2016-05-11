@@ -38,7 +38,7 @@ class Info extends React.Component<InfoProps, InfoState> {
     let content : JSX.Element[] = [];
     switch(this.state.currentTab) {
       case 'settings':
-        content.push(<Settings key='setings' />)
+        content.push(<Settings key='setings' getRooms={this.getRooms}/>)
         break;
       case 'users':
         content.push(<Users key="users" room={this.props.chat.getRoom(this.props.currentRoom)}/>);
@@ -46,7 +46,7 @@ class Info extends React.Component<InfoProps, InfoState> {
       case 'rooms': default:
         content.push(
           <Rooms
-            key="rooms" 
+            key="rooms"
             rooms={this.props.chat.rooms}
             current={this.props.currentRoom}
             select={this.props.selectRoom}

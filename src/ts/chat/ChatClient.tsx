@@ -82,6 +82,16 @@ class ChatClient {
     this.updated = Date.now();
   }
 
+  private _checkFirstTimeConfigs(): void {
+    if(localStorage.getItem("CSE_PATCHER_Stored_channels_init") === null){
+      localStorage.setItem("CSE_PATCHER_Stored_channels_init", 'true');
+      let rooms: string[] = DEFAULT_ROOM_LIST;
+      if (rooms.length > 0) {
+        localStorage.setItem("CSE_PATCHER_Stored_channels", rooms.toString());
+      }
+    }
+  }
+
   public on(topic: string, handler: (data?: any) => void): any {
     return this.emitter.on(topic, handler);
   }
@@ -94,7 +104,7 @@ class ChatClient {
     username: string | (() => string),
     password: string | (() => string),
     nick: string = "",
-    rooms: string[] = DEFAULT_ROOM_LIST
+    rooms: string[] = []
   ): void {
     if (this.chat) {
       console.warn("ChatClient:connect() called when already connected.");
@@ -104,6 +114,7 @@ class ChatClient {
     this.connected = false;
     this.updated = 0;
     this.config = new Config(username, password, nick);
+    this._checkFirstTimeConfigs();
     this._connect(rooms);
   }
 

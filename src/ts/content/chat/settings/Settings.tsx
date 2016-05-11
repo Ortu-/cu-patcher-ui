@@ -10,9 +10,11 @@ let Animate = components.Animate;
 
 import BooleanOption from './BooleanOption';
 import ChatDisplay from './ChatDisplay';
+import ChatRooms from './ChatRooms';
 
 export interface SettingsProps {
-    key: string;
+  key: string;
+  getRooms: () => void;
 }
 
 export interface SettingsState {
@@ -22,7 +24,7 @@ export interface SettingsState {
 }
 
 class Settings extends React.Component<SettingsProps, SettingsState> {
-  
+
   constructor(props: SettingsProps) {
     super(props);
     this.state = {
@@ -31,12 +33,18 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
       checked: true
     }
   }
-  
+
   generateSection = (sectionName: string) => {
-    if (sectionName == '') return null;
-    return <div key={sectionName} className='fly-out'><ChatDisplay /></div>
+    switch (sectionName) {
+      case 'chat-display':
+        return <div key={sectionName} className='fly-out'><ChatDisplay /></div>
+      case 'chat-rooms':
+        return <div key={sectionName} className='fly-out'><ChatRooms getRooms={this.props.getRooms}/></div>
+      default:
+        return null;
+    }
   }
-  
+
   navigate = (sectionName: string) => {
     let name = this.state.sectionName == sectionName ? '' : sectionName;
     this.setState({
@@ -45,7 +53,7 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
       checked: this.state.checked
     });
   }
-  
+
   onChecked = (id: string) => {
     this.setState({
       section: this.state.section,
@@ -53,7 +61,7 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
       checked: !this.state.checked
     });
   }
-  
+
   render() {
     let flyout = this.state.section;
     return (
@@ -63,7 +71,7 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
             Chat Display<br />
             <i>Change what you see in the chatbox.</i>
           </li>
-          <li onClick={this.navigate.bind(this, '')} key={2}>
+          <li onClick={this.navigate.bind(this, 'chat-rooms')} key={2}>
             Rooms<br />
             <i>Available rooms &amp; autojoin settings.</i>
           </li>
